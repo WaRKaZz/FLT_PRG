@@ -31,7 +31,6 @@ def main(page: Page):
     page.on_view_pop = view_pop
     page.on_route_change = route_change
     page.go(page.route)
-    print("hello")
 
 
 if __name__ == "__main__":
