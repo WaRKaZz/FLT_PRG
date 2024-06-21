@@ -27,9 +27,11 @@ def main(page: Page):
         page.views.pop()
         top_view = page.views[-1]
         page.go(top_view.route)
+
     page.on_view_pop = view_pop
     page.on_route_change = route_change
     page.go(page.route)
+    print("hello")
 
 
 if __name__ == "__main__":
