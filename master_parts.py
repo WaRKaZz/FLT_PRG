@@ -25,6 +25,7 @@ class Master_Tab_View(View):
 
     def __init__(self, navigation_bar, app_bar):
         super().__init__()
+        self.scroll = ft.ScrollMode.AUTO
         self.appbar = app_bar
         self.navigation_bar = navigation_bar
 
@@ -35,7 +36,7 @@ class Master_App_Bar(AppBar):
         self.title = Text(text)
         self.actions = [IconButton(icon=icon, on_click=self.goto_settings)]
 
-    def goto_settings(self, e):
+    async def goto_settings(self, e):
         if e.page.route != "/settings":
             e.page.go("/settings")
         else:
@@ -53,7 +54,7 @@ class Master_Selector_Container(Container):
             ],
             alignment=ft.alignment.center_left,
             width=80,
-            col={"xs": 11, "sm": 10, "md": 10, "xl": 9},
+            col={"xs": 10, "sm": 10, "md": 10, "xl": 9},
         )
         self.column2 = ft.Column(
             [
@@ -65,7 +66,7 @@ class Master_Selector_Container(Container):
                 )
             ],
             width=20,
-            col={"xs": 1, "sm": 2, "md": 2, "xl": 3},
+            col={"xs": 2, "sm": 2, "md": 2, "xl": 3},
             alignment=ft.alignment.center_right,
         )
         self.padding = 20
@@ -102,11 +103,20 @@ class Master_Navigation_Bar(NavigationBar):
             ),
         ]
 
-    def select_tab(self, e):
-        if e.control.selected_index == 0:
+    async def select_tab(self, e):
+        assert e is not None
+        assert e.control is not None
+        assert e.page is not None
+
+        selected_index = e.control.selected_index
+
+        if selected_index == 0:
             e.page.route = "/guide"
-        if e.control.selected_index == 1:
+        elif selected_index == 1:
             e.page.route = "/practice"
-        if e.control.selected_index == 2:
+        elif selected_index == 2:
             e.page.route = "/about"
+        else:
+            raise ValueError(f"Unexpected selected_index: {selected_index}")
+
         e.page.update()

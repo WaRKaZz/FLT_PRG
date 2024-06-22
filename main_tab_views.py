@@ -26,6 +26,7 @@ class Guide_Tab_View(Master_Tab_View):
                 ],
             ),
         ]
+        self.expand = True
 
 
 class Practice_Tab_View(Master_Tab_View):
@@ -50,6 +51,7 @@ class Root_Tab_View(Master_Tab_View):
     def __init__(self, navigation_bar, app_bar):
         super().__init__(navigation_bar, app_bar)
         self.route = "/"
+        self.scroll = None
         self.vertical_alignment = "center"
         self.horizontal_alignment = "center"
         self.controls = [
@@ -64,5 +66,5 @@ class Root_Tab_View(Master_Tab_View):
             ),
         ]
 
-    def start(self, e):
+    async def start(self, e):
         self.page.go("/practice")
