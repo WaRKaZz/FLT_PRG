@@ -9,7 +9,7 @@ OUTPUT_FOLDER = "C:\\Intel\\PRJ\\FLT_PRG\\resources\\voice_aigul"
 async def main(text) -> None:
     """Main function"""
     communicator = edge_tts.Communicate(text, VOICE)
-    await communicator.save(OUTPUT_FOLDER + f"\\{text}.mp3")
+    await communicator.save(OUTPUT_FOLDER + f"\\{text.replace(' ', '')}.mp3")
 
 
 if __name__ == "__main__":
@@ -20,4 +20,3 @@ if __name__ == "__main__":
     for i in range(10, 100):
         asyncio.run(main(f"0 {i}"))
     asyncio.run(main("плюс 7"))
-        
