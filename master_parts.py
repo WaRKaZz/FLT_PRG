@@ -1,5 +1,7 @@
+import flet as ft
 from flet import (
     AppBar,
+    Container,
     IconButton,
     NavigationBar,
     NavigationBarDestination,
@@ -39,6 +41,40 @@ class Master_App_Bar(AppBar):
         else:
             e.page.views.pop()
             e.page.go(e.page.views[-1].route)
+
+
+class Master_Selector_Container(Container):
+    def __init__(self, upper_text, lower_text, action):
+        super().__init__()
+        self.column1 = ft.Column(
+            [
+                ft.Text(upper_text, theme_style=ft.TextThemeStyle.TITLE_LARGE),
+                ft.Text(lower_text),
+            ],
+            alignment=ft.alignment.center_left,
+            width=80,
+            col={"xs": 11, "sm": 10, "md": 10, "xl": 9},
+        )
+        self.column2 = ft.Column(
+            [
+                ft.IconButton(
+                    adaptive=True,
+                    icon=ft.icons.ARROW_FORWARD,
+                    on_click=action,
+                    alignment=ft.alignment.center,
+                )
+            ],
+            width=20,
+            col={"xs": 1, "sm": 2, "md": 2, "xl": 3},
+            alignment=ft.alignment.center_right,
+        )
+        self.padding = 20
+        self.border_radius = 10
+        # self.ink = True
+        self.border = ft.border.all(1, ft.colors.BLACK)
+        self.width = 100
+        self.content = ft.ResponsiveRow([self.column1, self.column2])
+        self.col = {"sm": 6, "md": 4, "xl": 2}
 
 
 class Master_Navigation_Bar(NavigationBar):

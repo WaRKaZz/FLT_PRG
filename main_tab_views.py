@@ -1,6 +1,6 @@
 import flet as ft
 
-from master_parts import Master_Tab_View
+from master_parts import Master_Selector_Container, Master_Tab_View
 from text_controller import start_txt, welcome_message_txt
 
 
@@ -8,6 +8,24 @@ class Guide_Tab_View(Master_Tab_View):
     def __init__(self, navigation_bar, app_bar):
         super().__init__(navigation_bar, app_bar)
         self.route = "/guide"
+        self.controls = [
+            ft.ResponsiveRow(
+                [
+                    # Temp for testing will be replaced with view manager
+                    Master_Selector_Container("hello", "world", None),
+                    Master_Selector_Container("goodbye", "world", None),
+                    Master_Selector_Container("hello", "world", None),
+                    Master_Selector_Container("goodbye", "world", None),
+                    Master_Selector_Container("hello", "world", None),
+                    Master_Selector_Container("goodbye", "world", None),
+                    Master_Selector_Container("hello", "world", None),
+                    Master_Selector_Container("goodbye", "world", None),
+                    Master_Selector_Container("hello", "world", None),
+                    Master_Selector_Container("goodbye", "world", None),
+                    Master_Selector_Container("hello", "world", None),
+                ],
+            ),
+        ]
 
 
 class Practice_Tab_View(Master_Tab_View):

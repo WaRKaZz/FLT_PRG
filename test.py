@@ -1,9 +1,22 @@
-import os
+import flet
 
-path = "C:\\Intel\\PRJ\\nomerin-aitashy\\resources\\voice_aigul"
 
-files = [f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))]
+def main(page: flet.Page):
+    container1 = flet.Container(
+        content=flet.Text("Container 1"),
+        color=flet.Colors.BLUE,
+        padding=10,
+    )
+    container2 = flet.Container(
+        content=flet.Text("Container 2"),
+        color=flet.Colors.GREEN,
+        padding=10,
+    )
+    row = flet.Row(
+        children=[container1, container2],
+        alignment=flet.MainAxisAlignment.CENTER,
+    )
+    page.add(row)
 
-for file in files:
-    if " " in file:
-        os.rename(path + "\\" + file, path + "\\" + file.replace(" ", ""))
+
+flet.app(target=main)

@@ -5,3 +5,5 @@ practice_txt = "Practice"
 about_txt = "About Project"
 start_txt = "Start"
 settings_txt = "Settings"
+
+# TODO Create proper Text Controller and refactor every text getter
