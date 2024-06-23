@@ -23,11 +23,13 @@ pip install -r requirements.txt
 ## Usage
 After installation, you can run the app using the following command:
 
+To create webapp, that will be working at your system:
 ```bash
 flet run --web --port 8000 app.py
 ```
-
 This will launch the app on your default web browser, optimized for mobile viewing.
+
+To build Android\iOS\Linux\Windows application refer flet documentation https://flet.dev/docs/publish
 
 ## Contributing
 TODO Contributing instructions. I not sure how it should works yet.
