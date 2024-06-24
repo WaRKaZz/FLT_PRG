@@ -5,30 +5,30 @@
 # Nomerin Aitashy is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License along with Nomerin Aitashy. If not, see <https://www.gnu.org/licenses/>.
-
-welcome_message_txt = "Hello, fellow User, this applcation will teach how to count in Kazakh language \nPress Start to start your Kazakh language practice"
-welcome_txt = "Welcome"
-guide_txt = "Guide"
-practice_txt = "Practice"
-about_txt = "About Project"
-start_txt = "Start"
-settings_txt = "Settings"
-
-
+import asyncio
 import configparser
 
 
 # TODO Create proper Text Controller and refactor every text getter
-class txt_ctl:
+class TextController:
     def __init__(self):
         pass
 
     @classmethod
-    def __class_getitem__(self, name: str) -> str:
-        config = configparser.RawConfigParser()
-        config.read("language.properties")
-        return config.get("en_US", name)
+    async def get(cls, name: str, locale: str = "en_US") -> str:
+        config = configparser.ConfigParser()
+        try:
+            await asyncio.to_thread(
+                config.read, "language.properties", encoding="utf-8"
+            )
+        except FileNotFoundError:
+            raise FileNotFoundError("Language file not found.")
+        if not config.has_section(locale):
+            raise ValueError(f"No {locale} section found in language file.")
+        if not config.has_option(locale, name):
+            raise ValueError(f"No option '{name}' found in {locale} section.")
+        return config.get(locale, name)
 
 
 if __name__ == "__main__":
-    print(txt_ctl["welcome_txt"])
+    print(Txt_Ctl.get("welcome_txt"))

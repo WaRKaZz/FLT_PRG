@@ -20,7 +20,7 @@ from flet import (
     icons,
 )
 
-from text_controller import about_txt, guide_txt, practice_txt
+from text_controller import TextController
 
 
 class Master_Tab_View(View):
@@ -98,17 +98,17 @@ class Master_Navigation_Bar(NavigationBar):
             NavigationBarDestination(
                 icon=icons.BOOK_OUTLINED,
                 selected_icon=icons.BOOK,
-                label=guide_txt,
+                label=TextController.get("guide_txt"),
             ),
             NavigationBarDestination(
                 icon=icons.MENU,
                 selected_icon=icons.MENU_OPEN,
-                label=practice_txt,
+                label=TextController.get("practice_txt"),
             ),
             NavigationBarDestination(
                 icon=icons.INFO_OUTLINED,
                 selected_icon=icons.INFO,
-                label=about_txt,
+                label=TextController.get("about_txt"),
             ),
         ]
 

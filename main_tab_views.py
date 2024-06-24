@@ -9,7 +9,7 @@
 import flet as ft
 
 from master_parts import Master_Selector_Container, Master_Tab_View
-from text_controller import start_txt, welcome_message_txt
+from text_controller import TextController
 
 
 class Guide_Tab_View(Master_Tab_View):
@@ -64,12 +64,12 @@ class Root_Tab_View(Master_Tab_View):
         self.horizontal_alignment = "center"
         self.controls = [
             ft.Text(
-                value=welcome_message_txt,
+                value=TextController.get("welcome_message_txt"),
                 size=17,
                 text_align=ft.TextAlign.CENTER,
             ),
             ft.ElevatedButton(
-                content=ft.Text(start_txt, size=25),
+                content=ft.Text(TextController.get("start_txt"), size=25),
                 on_click=self.start,
             ),
         ]
