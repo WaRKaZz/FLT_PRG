@@ -10,13 +10,13 @@ import configparser
 
 
 # TODO Create proper Text Controller and refactor every text getter
-class TextController:
+class Txt_Ctl:
     def __init__(self):
         pass
 
     @classmethod
-    async def get(cls, name: str, locale: str = "en_US") -> str:
-        config = configparser.ConfigParser()
+    async def _async_get(cls, name: str, locale: str) -> str:
+        config = configparser.RawConfigParser()
         try:
             await asyncio.to_thread(
                 config.read, "language.properties", encoding="utf-8"
@@ -24,10 +24,20 @@ class TextController:
         except FileNotFoundError:
             raise FileNotFoundError("Language file not found.")
         if not config.has_section(locale):
-            raise ValueError(f"No {locale} section found in language file.")
+            raise ValueError("No en_US section found in language file.")
         if not config.has_option(locale, name):
-            raise ValueError(f"No option '{name}' found in {locale} section.")
+            raise ValueError(f"No option '{name}' found in en_US section.")
         return config.get(locale, name)
+
+    @classmethod
+    def get(cls, name: str) -> str:
+        locale = "en_US"
+        try:
+            loop = asyncio.get_running_loop()
+        except RuntimeError:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+        return loop.run_until_complete(cls._async_get(name, locale))
 
 
 if __name__ == "__main__":
