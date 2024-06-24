@@ -7,6 +7,8 @@
 # You should have received a copy of the GNU General Public License along with Nomerin Aitashy. If not, see <https://www.gnu.org/licenses/>.
 
 
+from typing import TYPE_CHECKING
+
 import flet as ft
 from flet import (
     AppBar,
@@ -20,26 +22,11 @@ from flet import (
     icons,
 )
 
-from text_controller import TextController
+if TYPE_CHECKING:
+    from controller import TextController
 
 
-class Master_Tab_View(View):
-    """
-    Initializes a Master_View object.
-
-    Args:
-        navigation_bar: NavigationBar object for the view.
-        app_bar: AppBar object for the view.
-    """
-
-    def __init__(self, navigation_bar, app_bar):
-        super().__init__()
-        self.scroll = ft.ScrollMode.AUTO
-        self.appbar = app_bar
-        self.navigation_bar = navigation_bar
-
-
-class Master_App_Bar(AppBar):
+class MasterAppBar(AppBar):
     def __init__(self, text, icon=icons.SETTINGS_OUTLINED):
         super().__init__()
         self.title = Text(text)
@@ -53,7 +40,27 @@ class Master_App_Bar(AppBar):
             e.page.go(e.page.views[-1].route)
 
 
-class Master_Selector_Container(Container):
+class MasterTabView(View):
+    """
+    Initializes a Master_View object.
+
+    Args:
+        navigation_bar: NavigationBar object for the view.
+        app_bar: AppBar object for the view.
+    """
+
+    def __init__(
+        self,
+        app_bar: MasterAppBar,
+        navigation_bar: "NavigationBar" = None,
+    ):
+        super().__init__()
+        self.scroll = ft.ScrollMode.AUTO
+        self.appbar = app_bar
+        self.navigation_bar = navigation_bar
+
+
+class MasterSelectorContainer(Container):
     def __init__(self, upper_text, lower_text, action):
         super().__init__()
         self.column1 = ft.Column(
@@ -87,8 +94,8 @@ class Master_Selector_Container(Container):
         self.col = {"sm": 6, "md": 4, "xl": 2}
 
 
-class Master_Navigation_Bar(NavigationBar):
-    def __init__(self):
+class MasterNavigationBar(NavigationBar):
+    def __init__(self, text_controller: "TextController"):
         super().__init__()
         self.adaptive = True
         self.label_behavior = NavigationBarLabelBehavior.ONLY_SHOW_SELECTED
@@ -98,17 +105,17 @@ class Master_Navigation_Bar(NavigationBar):
             NavigationBarDestination(
                 icon=icons.BOOK_OUTLINED,
                 selected_icon=icons.BOOK,
-                label=TextController.get("guide_txt"),
+                label=text_controller.get("guide_txt"),
             ),
             NavigationBarDestination(
                 icon=icons.MENU,
                 selected_icon=icons.MENU_OPEN,
-                label=TextController.get("practice_txt"),
+                label=text_controller.get("practice_txt"),
             ),
             NavigationBarDestination(
                 icon=icons.INFO_OUTLINED,
                 selected_icon=icons.INFO,
-                label=TextController.get("about_txt"),
+                label=text_controller.get("about_txt"),
             ),
         ]
 

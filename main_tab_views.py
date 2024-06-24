@@ -6,73 +6,102 @@
 #
 # You should have received a copy of the GNU General Public License along with Nomerin Aitashy. If not, see <https://www.gnu.org/licenses/>.
 
+from typing import TYPE_CHECKING
+
 import flet as ft
 
-from master_parts import Master_Selector_Container, Master_Tab_View
-from text_controller import TextController
+if TYPE_CHECKING:
+    from controller import TextController
+    from master_parts import MasterNavigationBar, MasterAppBar
+
+from master_parts import MasterSelectorContainer, MasterTabView
 
 
-class Guide_Tab_View(Master_Tab_View):
-    def __init__(self, navigation_bar, app_bar):
+class GuideTabView(MasterTabView):
+    def __init__(
+        self,
+        text_controller: "TextController",
+        navigation_bar: "MasterNavigationBar",
+        app_bar: "MasterAppBar",
+    ):
         super().__init__(navigation_bar, app_bar)
         self.route = "/guide"
         self.controls = [
             ft.ResponsiveRow(
                 [
                     # Temp for testing will be replaced with view manager
-                    Master_Selector_Container("hello", "world", None),
-                    Master_Selector_Container("goodbye", "world", None),
-                    Master_Selector_Container("hello", "world", None),
-                    Master_Selector_Container("goodbye", "world", None),
-                    Master_Selector_Container("hello", "world", None),
-                    Master_Selector_Container("goodbye", "world", None),
-                    Master_Selector_Container("hello", "world", None),
-                    Master_Selector_Container("goodbye", "world", None),
-                    Master_Selector_Container("hello", "world", None),
-                    Master_Selector_Container("goodbye", "world", None),
-                    Master_Selector_Container("hello", "world", None),
+                    MasterSelectorContainer("hello", "world", None),
+                    MasterSelectorContainer("goodbye", "world", None),
+                    MasterSelectorContainer("hello", "world", None),
+                    MasterSelectorContainer("goodbye", "world", None),
+                    MasterSelectorContainer("hello", "world", None),
+                    MasterSelectorContainer("goodbye", "world", None),
+                    MasterSelectorContainer("hello", "world", None),
+                    MasterSelectorContainer("goodbye", "world", None),
+                    MasterSelectorContainer("hello", "world", None),
+                    MasterSelectorContainer("goodbye", "world", None),
+                    MasterSelectorContainer("hello", "world", None),
                 ],
             ),
         ]
         self.expand = True
 
 
-class Practice_Tab_View(Master_Tab_View):
-    def __init__(self, navigation_bar, app_bar):
-        super().__init__(navigation_bar, app_bar)
+class PracticeTabView(MasterTabView):
+    def __init__(
+        self,
+        text_controller: "TextController",
+        navigation_bar: "MasterNavigationBar",
+        app_bar: "MasterAppBar",
+    ):
+        super().__init__(app_bar, navigation_bar)
         self.route = "/practice"
 
 
-class About_Tab_View(Master_Tab_View):
-    def __init__(self, navigation_bar, app_bar):
-        super().__init__(navigation_bar, app_bar)
+class AboutTabView(MasterTabView):
+    def __init__(
+        self,
+        text_controller: "TextController",
+        navigation_bar: "MasterNavigationBar",
+        app_bar: "MasterAppBar",
+    ):
+        super().__init__(app_bar, navigation_bar)
         self.route = "/about"
 
 
-class Settings_Tab_View(Master_Tab_View):
-    def __init__(self, navigation_bar, app_bar):
-        super().__init__(navigation_bar, app_bar)
+class SettingsTabView(MasterTabView):
+    def __init__(
+        self,
+        text_controller: "TextController",
+        navigation_bar: "MasterNavigationBar",
+        app_bar: "MasterAppBar",
+    ):
+        super().__init__(app_bar, navigation_bar)
         self.route = "/settings"
 
 
-class Root_Tab_View(Master_Tab_View):
-    def __init__(self, navigation_bar, app_bar):
-        super().__init__(navigation_bar, app_bar)
+class RootTabView(MasterTabView):
+    def __init__(
+        self,
+        text_controller: "TextController",
+        app_bar: "MasterAppBar",
+    ):
+        super().__init__(app_bar)
         self.route = "/"
         self.scroll = None
         self.vertical_alignment = "center"
         self.horizontal_alignment = "center"
         self.controls = [
             ft.Text(
-                value=TextController.get("welcome_message_txt"),
+                value=text_controller.get("welcome_message_txt"),
                 size=17,
                 text_align=ft.TextAlign.CENTER,
             ),
             ft.ElevatedButton(
-                content=ft.Text(TextController.get("start_txt"), size=25),
+                content=ft.Text(text_controller.get("start_txt"), size=25),
                 on_click=self.start,
             ),
         ]
 
     async def start(self, e):
-        self.page.go("/practice")
+        e.page.go("/practice")
