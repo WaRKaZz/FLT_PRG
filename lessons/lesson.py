@@ -1,4 +1,4 @@
-from os import getcwd
+from os import getcwd, path
 from typing import TYPE_CHECKING
 
 from master_parts import MasterSelectorContainer, MasterTabView
@@ -29,10 +29,9 @@ class LessonView(MasterTabView):
         )
 
     def _get_voice_location(self, voice):
-        root = getcwd()
         if voice == "aigul":
-            return root + "\\resources\\voice_aigul"
+            return path.join(getcwd(), "resources", "voice_aigul")
         elif voice == "siri":
-            return root + "\\resources\\voice_siri"
+            return path.join(getcwd(), "resources", "voice_siri")
         else:
-            return root + "\\resources\\voice_aigul"
+            return path.join(getcwd(), "resources", "voice_aigul")

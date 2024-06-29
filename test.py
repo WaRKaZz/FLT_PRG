@@ -1,5 +1,5 @@
 import flet as ft
-
+from os import getcwd
 
 def main(page: ft.Page):
     audio1 = ft.Audio(
@@ -13,4 +13,6 @@ def main(page: ft.Page):
     )
 
 
-ft.app(target=main)
+if __name__ == "__main__":
+    print(getcwd())
+    # ft.app(target=main)

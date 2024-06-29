@@ -1,4 +1,5 @@
 from typing import TYPE_CHECKING
+from os.path import join
 
 from flet import (
     Audio,
@@ -94,7 +95,7 @@ class LessonZeroView(LessonView):
     def _playsound(self, e):
         if e.page.client_storage.contains_key("settings_voice"):
             self.voice = e.page.client_storage.get("settings_voice")
-        audio_src = self._get_voice_location(self.voice) + f"\\{e.control.data}.mp3"
+        audio_src = join(self._get_voice_location(self.voice), f"{e.control.data}.mp3")
         print(audio_src)
         audio = Audio(
             src=audio_src,
