@@ -30,8 +30,8 @@ class LessonView(MasterTabView):
 
     def _get_voice_location(self, voice):
         if voice == "aigul":
-            return path.join(getcwd(), "resources", "voice_aigul")
+            return path.join(getcwd(), "assets", "voice_aigul")
         elif voice == "siri":
-            return path.join(getcwd(), "resources", "voice_siri")
+            return path.join(getcwd(), "assets", "voice_siri")
         else:
-            return path.join(getcwd(), "resources", "voice_aigul")
+            return path.join(getcwd(), "assets", "voice_aigul")
