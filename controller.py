@@ -6,13 +6,15 @@
 #
 # You should have received a copy of the GNU General Public License along with Nomerin Aitashy. If not, see <https://www.gnu.org/licenses/>.
 
+import ast
 import asyncio
 import configparser
 
 import aiofiles
 import flet as ft
-from flet import icons
+from flet import AppBar, Text, icons
 
+from lessons.lesson0 import LessonZeroView
 from main_tab_views import (
     AboutTabView,
     GuideTabView,
@@ -20,7 +22,7 @@ from main_tab_views import (
     RootTabView,
     SettingsTabView,
 )
-from master_parts import MasterAppBar, MasterNavigationBar
+from master_parts import MasterNavigationBar
 
 
 class TextController:
@@ -49,8 +51,12 @@ class TextController:
             raise ValueError(f"No section '{locale}' found in language file.")
         if not self._config.has_option(locale, name):
             raise ValueError(f"No option '{name}' found in '{locale}' section.")
-
-        return self._config.get(locale, name).encode("utf-8").decode("unicode_escape")
+        raw_string = self._config.get(locale, name)
+        try:
+            return ast.literal_eval(f"'''{raw_string}'''")
+        except (SyntaxError, ValueError):
+            # If literal_eval fails, return the raw string
+            return raw_string
 
 
 class Controller:
@@ -58,72 +64,95 @@ class Controller:
         self.__page = page
         self._config = None
         self.text_controller = text_controller
-        self.navigation_bar = MasterNavigationBar(text_controller)
 
-    async def _route_guide(self):
+    async def _route_guide(self, locations):
         # TODO Better route management ex "/lesson1" -> "/guide/lesson1" and so on
+        # if self.__page.client_storage.contains_key("voice"):
+        #     voice = self.__page.client_storage.get("voice")
+        # else:
+        #     voice = "aigul"
+
+        lessons = [
+            LessonZeroView(
+                text_controller=self.text_controller,
+                navigation_bar=MasterNavigationBar(self.text_controller),
+                app_bar=AppBar(
+                    title=Text(self.text_controller.get("lesson0_upper_text"))
+                ),
+            )
+        ]
         self.__page.views.clear()
+        title = Text(self.text_controller.get("guide_txt"))
         self.__page.views.append(
             GuideTabView(
                 text_controller=self.text_controller,
                 navigation_bar=MasterNavigationBar(self.text_controller),
-                app_bar=MasterAppBar(self.text_controller.get("guide_txt")),
+                app_bar=AppBar(title=title),
+                lessons=lessons,
             )
         )
+        try:
+            self.__page.views.append(lessons[int(locations[2])])
+        except IndexError:
+            pass
 
-    async def _route_practice(self):
+    async def _route_practice(self, locations):
         # TODO Better route management ex "/level1 " -> "/practice/level1" and so on
+        title = Text(self.text_controller.get("practice_txt"))
         self.__page.views.clear()
         self.__page.views.append(
             PracticeTabView(
                 text_controller=self.text_controller,
                 navigation_bar=MasterNavigationBar(self.text_controller),
-                app_bar=MasterAppBar(self.text_controller.get("practice_txt")),
+                app_bar=AppBar(title=title),
             )
         )
 
     async def _route_about(self):
+        title = Text(self.text_controller.get("about_txt"))
         self.__page.views.clear()
         self.__page.views.append(
             AboutTabView(
                 text_controller=self.text_controller,
                 navigation_bar=MasterNavigationBar(self.text_controller),
-                app_bar=MasterAppBar(self.text_controller.get("about_txt")),
+                app_bar=AppBar(title=title),
             )
         )
 
-    async def _route_setting(self):
+    async def _route_setting(self, locations):
+        title = Text(self.text_controller.get("settings_txt"))
+        self.__page.views.clear()
         self.__page.views.append(
             SettingsTabView(
                 text_controller=self.text_controller,
                 navigation_bar=MasterNavigationBar(self.text_controller),
-                app_bar=MasterAppBar(
-                    self.text_controller.get("settings_txt"), icons.SETTINGS
-                ),
+                app_bar=AppBar(title=title),
             )
         )
 
     async def _route_root(self):
         # TODO Don't apper root page if start button pressed by user
+        title = Text(self.text_controller.get("welcome_txt"))
         self.__page.views.clear()
         self.__page.views.append(
             RootTabView(
                 text_controller=self.text_controller,
-                app_bar=MasterAppBar(self.text_controller.get("welcome_txt")),
+                app_bar=AppBar(title=title),
             )
         )
 
     async def routechange(self, e: ft.RouteChangeEvent):
+        locations = e.route.split("/")
         if e.route == "/":
             await self._route_root()
         elif e.route.startswith("/guide"):
-            await self._route_guide()
+            await self._route_guide(locations)
         elif e.route.startswith("/about"):
             await self._route_about()
         elif e.route.startswith("/practice"):
-            await self._route_practice()
+            await self._route_practice(locations)
         elif e.route.startswith("/settings"):
-            await self._route_setting()
+            await self._route_setting(locations)
         else:
             self.__page.go("/")
         self.__page.update()

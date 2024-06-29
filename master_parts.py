@@ -26,18 +26,18 @@ if TYPE_CHECKING:
     from controller import TextController
 
 
-class MasterAppBar(AppBar):
-    def __init__(self, text, icon=icons.SETTINGS_OUTLINED):
-        super().__init__()
-        self.title = Text(text)
-        self.actions = [IconButton(icon=icon, on_click=self.goto_settings)]
+# class MasterAppBar(AppBar):
+#     def __init__(self, text, icon=icons.SETTINGS_OUTLINED):
+#         super().__init__()
+#         self.title = Text(text)
+#         self.actions = [IconButton(icon=icon, on_click=self.goto_settings)]
 
-    async def goto_settings(self, e):
-        if e.page.route != "/settings":
-            e.page.go("/settings")
-        else:
-            e.page.views.pop()
-            e.page.go(e.page.views[-1].route)
+#     async def goto_settings(self, e):
+#         if e.page.route != "/settings":
+#             e.page.go("/settings")
+#         else:
+#             e.page.views.pop()
+#             e.page.go(e.page.views[-1].route)
 
 
 class MasterTabView(View):
@@ -51,7 +51,7 @@ class MasterTabView(View):
 
     def __init__(
         self,
-        app_bar: MasterAppBar,
+        app_bar: AppBar = None,
         navigation_bar: "NavigationBar" = None,
     ):
         super().__init__()
@@ -91,7 +91,7 @@ class MasterSelectorContainer(Container):
         self.border = ft.border.all(1, ft.colors.BLACK)
         self.width = 100
         self.content = ft.ResponsiveRow([self.column1, self.column2])
-        self.col = {"sm": 6, "md": 4, "xl": 2}
+        self.col = {"sm": 6, "md": 4, "xl": 4}
 
 
 class MasterNavigationBar(NavigationBar):
@@ -113,9 +113,9 @@ class MasterNavigationBar(NavigationBar):
                 label=text_controller.get("practice_txt"),
             ),
             NavigationBarDestination(
-                icon=icons.INFO_OUTLINED,
+                icon=icons.SETTINGS,
                 selected_icon=icons.INFO,
-                label=text_controller.get("about_txt"),
+                label=text_controller.get("settings_txt"),
             ),
         ]
 

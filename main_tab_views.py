@@ -11,8 +11,9 @@ from typing import TYPE_CHECKING
 import flet as ft
 
 if TYPE_CHECKING:
+    from flet import AppBar
     from controller import TextController
-    from master_parts import MasterNavigationBar, MasterAppBar
+    from master_parts import MasterNavigationBar
 
 from master_parts import MasterSelectorContainer, MasterTabView
 
@@ -22,26 +23,14 @@ class GuideTabView(MasterTabView):
         self,
         text_controller: "TextController",
         navigation_bar: "MasterNavigationBar",
-        app_bar: "MasterAppBar",
+        lessons: list,
+        app_bar: "AppBar",
     ):
-        super().__init__(navigation_bar, app_bar)
+        super().__init__(app_bar=app_bar, navigation_bar=navigation_bar)
         self.route = "/guide"
         self.controls = [
             ft.ResponsiveRow(
-                [
-                    # Temp for testing will be replaced with view manager
-                    MasterSelectorContainer("hello", "world", None),
-                    MasterSelectorContainer("goodbye", "world", None),
-                    MasterSelectorContainer("hello", "world", None),
-                    MasterSelectorContainer("goodbye", "world", None),
-                    MasterSelectorContainer("hello", "world", None),
-                    MasterSelectorContainer("goodbye", "world", None),
-                    MasterSelectorContainer("hello", "world", None),
-                    MasterSelectorContainer("goodbye", "world", None),
-                    MasterSelectorContainer("hello", "world", None),
-                    MasterSelectorContainer("goodbye", "world", None),
-                    MasterSelectorContainer("hello", "world", None),
-                ],
+                (lessons[i].container for i in range(len(lessons))),
             ),
         ]
         self.expand = True
@@ -52,9 +41,9 @@ class PracticeTabView(MasterTabView):
         self,
         text_controller: "TextController",
         navigation_bar: "MasterNavigationBar",
-        app_bar: "MasterAppBar",
+        app_bar: "AppBar",
     ):
-        super().__init__(app_bar, navigation_bar)
+        super().__init__(app_bar=app_bar, navigation_bar=navigation_bar)
         self.route = "/practice"
 
 
@@ -63,9 +52,9 @@ class AboutTabView(MasterTabView):
         self,
         text_controller: "TextController",
         navigation_bar: "MasterNavigationBar",
-        app_bar: "MasterAppBar",
+        app_bar: "AppBar",
     ):
-        super().__init__(app_bar, navigation_bar)
+        super().__init__(app_bar=app_bar, navigation_bar=navigation_bar)
         self.route = "/about"
 
 
@@ -74,9 +63,9 @@ class SettingsTabView(MasterTabView):
         self,
         text_controller: "TextController",
         navigation_bar: "MasterNavigationBar",
-        app_bar: "MasterAppBar",
+        app_bar: "AppBar",
     ):
-        super().__init__(app_bar, navigation_bar)
+        super().__init__(app_bar=app_bar, navigation_bar=navigation_bar)
         self.route = "/settings"
 
 
@@ -84,9 +73,9 @@ class RootTabView(MasterTabView):
     def __init__(
         self,
         text_controller: "TextController",
-        app_bar: "MasterAppBar",
+        app_bar: "AppBar" = None,
     ):
-        super().__init__(app_bar)
+        super().__init__(app_bar=app_bar)
         self.route = "/"
         self.scroll = None
         self.vertical_alignment = "center"

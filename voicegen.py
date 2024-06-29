@@ -11,7 +11,7 @@ import asyncio
 import edge_tts
 
 VOICE = "kk-KZ-AigulNeural"
-OUTPUT_FOLDER = "C:\\Intel\\PRJ\\FLT_PRG\\resources\\voice_aigul"
+OUTPUT_FOLDER = r"C:\Intel\PRJ\nomerin-aitashy\resources\voice_aigul"
 
 
 async def main(text) -> None:
@@ -21,10 +21,11 @@ async def main(text) -> None:
 
 
 if __name__ == "__main__":
-    for i in range(1001):
-        asyncio.run(main(str(i)))
-    for i in range(10):
-        asyncio.run(main(f"00{i}"))
-    for i in range(10, 100):
-        asyncio.run(main(f"0 {i}"))
-    asyncio.run(main("плюс 7"))
+    asyncio.run(main("  0  "))
+    # for i in range(1001):
+    #     asyncio.run(main(str(i)))
+    # for i in range(10):
+    #     asyncio.run(main(f"00{i}"))
+    # for i in range(10, 100):
+    #     asyncio.run(main(f"0 {i}"))
+    # asyncio.run(main("плюс 7"))
