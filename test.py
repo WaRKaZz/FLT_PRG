@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import asyncio
 import random
 from flet import (
@@ -22,10 +21,6 @@ class DigitGame:
             data="sound",
             on_click=self.play_sound
         )
-=======
-import flet as ft
-from os import getcwd
->>>>>>> c4562511128c60fbf525c911551bb9f31b89544b
 
         self.keyboard = self.create_keyboard()
         self.content = Column(
