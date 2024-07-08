@@ -21,7 +21,7 @@ async def main(text) -> None:
 
 
 if __name__ == "__main__":
-    asyncio.run(main("  0  "))
+    asyncio.run(main("0  0  0"))
     # for i in range(1001):
     #     asyncio.run(main(str(i)))
     # for i in range(10):
