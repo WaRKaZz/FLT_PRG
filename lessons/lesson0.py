@@ -11,8 +11,7 @@ from flet import (
     icons,
 )
 
-from lessons.lesson import LessonView
-from master_parts import MasterNavigationBar, MasterSelectorContainer
+from master_parts import ContentView, MasterNavigationBar
 
 if TYPE_CHECKING:
     from flet import AppBar
@@ -20,7 +19,7 @@ if TYPE_CHECKING:
     from controller import TextController
 
 
-class LessonZeroView(LessonView):
+class LessonZeroView(ContentView):
     def __init__(
         self,
         text_controller: "TextController",
@@ -32,6 +31,7 @@ class LessonZeroView(LessonView):
             navigation_bar=navigation_bar,
             app_bar=app_bar,
             number=0,
+            view_type="lesson",
         )
         cyrillic = [
             "нөл",

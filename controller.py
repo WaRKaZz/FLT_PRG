@@ -15,6 +15,7 @@ import flet as ft
 from flet import AppBar, Text, icons
 
 from lessons.lesson0 import LessonZeroView
+from levels.level0 import LevelZeroView
 from main_tab_views import (
     AboutTabView,
     GuideTabView,
@@ -67,11 +68,6 @@ class Controller:
 
     async def _route_guide(self, locations):
         # TODO Better route management ex "/lesson1" -> "/guide/lesson1" and so on
-        # if self.__page.client_storage.contains_key("voice"):
-        #     voice = self.__page.client_storage.get("voice")
-        # else:
-        #     voice = "aigul"
-
         lessons = [
             LessonZeroView(
                 text_controller=self.text_controller,
@@ -99,14 +95,28 @@ class Controller:
     async def _route_practice(self, locations):
         # TODO Better route management ex "/level1 " -> "/practice/level1" and so on
         title = Text(self.text_controller.get("practice_txt"))
+        levels = [
+            LevelZeroView(
+                text_controller=self.text_controller,
+                navigation_bar=MasterNavigationBar(self.text_controller),
+                app_bar=AppBar(
+                    title=Text(self.text_controller.get("level0_upper_text"))
+                ),
+            )
+        ]
         self.__page.views.clear()
         self.__page.views.append(
             PracticeTabView(
                 text_controller=self.text_controller,
                 navigation_bar=MasterNavigationBar(self.text_controller),
                 app_bar=AppBar(title=title),
+                levels=levels,
             )
         )
+        try:
+            self.__page.views.append(levels[int(locations[2])])
+        except IndexError:
+            pass
 
     async def _route_about(self):
         title = Text(self.text_controller.get("about_txt"))

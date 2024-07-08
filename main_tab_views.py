@@ -41,10 +41,17 @@ class PracticeTabView(MasterTabView):
         self,
         text_controller: "TextController",
         navigation_bar: "MasterNavigationBar",
+        levels: list,
         app_bar: "AppBar",
     ):
         super().__init__(app_bar=app_bar, navigation_bar=navigation_bar)
         self.route = "/practice"
+        self.controls = [
+            ft.ResponsiveRow(
+                (levels[i].container for i in range(len(levels))),
+            ),
+        ]
+        self.expand = True
 
 
 class AboutTabView(MasterTabView):

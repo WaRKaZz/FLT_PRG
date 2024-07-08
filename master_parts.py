@@ -7,13 +7,14 @@
 # You should have received a copy of the GNU General Public License along with Nomerin Aitashy. If not, see <https://www.gnu.org/licenses/>.
 
 
+from os import getcwd, join, path
 from typing import TYPE_CHECKING
 
 import flet as ft
 from flet import (
     AppBar,
+    Audio,
     Container,
-    IconButton,
     NavigationBar,
     NavigationBarDestination,
     NavigationBarLabelBehavior,
@@ -58,6 +59,46 @@ class MasterTabView(View):
         self.scroll = ft.ScrollMode.AUTO
         self.appbar = app_bar
         self.navigation_bar = navigation_bar
+
+
+class ContentView(MasterTabView):
+    def __init__(
+        self,
+        text_controller: "TextController",
+        navigation_bar: "MasterNavigationBar",
+        app_bar: "AppBar",
+        number: int,
+        view_type: str,
+    ):
+        super().__init__(navigation_bar, app_bar)
+        self.voice = "aigul"
+        self.number = None
+
+        self.container = MasterSelectorContainer(
+            text_controller.get(f"{view_type}{str(number)}_upper_text"),
+            text_controller.get(f"{view_type}{str(number)}_lower_text"),
+            self._open,
+        )
+
+    def _get_voice_location(self, voice):
+        if voice == "aigul":
+            return path.join(getcwd(), "assets", "voice_aigul")
+        elif voice == "siri":
+            return path.join(getcwd(), "assets", "voice_siri")
+        else:
+            return path.join(getcwd(), "assets", "voice_aigul")
+
+    def _playsound(self, e):
+        if e.page.client_storage.contains_key("settings_voice"):
+            self.voice = e.page.client_storage.get("settings_voice")
+        audio_src = join(self._get_voice_location(self.voice), f"{e.control.data}.mp3")
+        audio = Audio(
+            src=audio_src,
+            autoplay=True,
+        )
+        e.page.overlay.append(audio)
+        e.page.update()
+        e.page.overlay.remove(audio)
 
 
 class MasterSelectorContainer(Container):
