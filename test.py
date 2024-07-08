@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import asyncio
 import random
 from flet import (
@@ -21,6 +22,10 @@ class DigitGame:
             data="sound",
             on_click=self.play_sound
         )
+=======
+import flet as ft
+from os import getcwd
+>>>>>>> c4562511128c60fbf525c911551bb9f31b89544b
 
         self.keyboard = self.create_keyboard()
         self.content = Column(
@@ -40,6 +45,7 @@ class DigitGame:
                 on_click=self.button_clicked
             )
 
+<<<<<<< HEAD
         return Column(
             [
                 Row(
@@ -96,3 +102,8 @@ async def main(page: Page):
     await game.start_game()
 
 app(target=main)
+=======
+if __name__ == "__main__":
+    print(getcwd())
+    # ft.app(target=main)
+>>>>>>> c4562511128c60fbf525c911551bb9f31b89544b
