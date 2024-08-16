@@ -56,7 +56,6 @@ class TextController:
         try:
             return ast.literal_eval(f"'''{raw_string}'''")
         except (SyntaxError, ValueError):
-            # If literal_eval fails, return the raw string
             return raw_string
 
 
@@ -67,7 +66,7 @@ class Controller:
         self.text_controller = text_controller
 
     async def _route_guide(self, locations):
-        # TODO Better route management ex "/lesson1" -> "/guide/lesson1" and so on
+        voice = await self.get_voice()
         lessons = [
             LessonZeroView(
                 text_controller=self.text_controller,
@@ -75,6 +74,7 @@ class Controller:
                 app_bar=AppBar(
                     title=Text(self.text_controller.get("lesson0_upper_text"))
                 ),
+                voice=voice,
             )
         ]
         self.__page.views.clear()
@@ -93,7 +93,7 @@ class Controller:
             pass
 
     async def _route_practice(self, locations):
-        # TODO Better route management ex "/level1 " -> "/practice/level1" and so on
+        voice = await self.get_voice()
         title = Text(self.text_controller.get("practice_txt"))
         levels = [
             LevelZeroView(
@@ -102,6 +102,7 @@ class Controller:
                 app_bar=AppBar(
                     title=Text(self.text_controller.get("level0_upper_text"))
                 ),
+                voice=voice,
             )
         ]
         self.__page.views.clear()
@@ -171,6 +172,12 @@ class Controller:
         self.__page.views.pop()
         top_view = self.__page.views[-1]
         self.__page.go(top_view.route)
+
+    async def get_voice(self) -> str:
+        if self.__page.client_storage.contains_key_async("voice"):
+            return await self.__page.client_storage.get_async("voice")
+        else:
+            return "aigul"
 
 
 if __name__ == "__main__":

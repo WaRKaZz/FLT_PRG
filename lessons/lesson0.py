@@ -1,5 +1,5 @@
-from typing import TYPE_CHECKING
 from os.path import join
+from typing import TYPE_CHECKING
 
 from flet import (
     Audio,
@@ -26,6 +26,7 @@ class LessonZeroView(ContentView):
         text_controller: "TextController",
         navigation_bar: "MasterNavigationBar",
         app_bar: "AppBar",
+        voice: str,
     ):
         super().__init__(
             text_controller=text_controller,
@@ -33,6 +34,7 @@ class LessonZeroView(ContentView):
             app_bar=app_bar,
             number=0,
             view_type="lesson",
+            voice=voice,
         )
         cyrillic = [
             "нөл",
@@ -74,7 +76,7 @@ class LessonZeroView(ContentView):
                             width=70,
                             height=40,
                             data=i,
-                            on_click=self._playsound,
+                            on_click=self.button_sound_handler,
                         )
                     ),
                     DataCell(Text(cyrillic[i])),
@@ -91,19 +93,6 @@ class LessonZeroView(ContentView):
         self.route = "/guide/0"
         self.controls = [title, DataTable(columns=columns, rows=rows), examples]
         self.expand = True
-
-    def _playsound(self, e):
-        if e.page.client_storage.contains_key("settings_voice"):
-            self.voice = e.page.client_storage.get("settings_voice")
-        audio_src = join(self._get_voice_location(self.voice), f"{e.control.data}.mp3")
-        print(audio_src)
-        audio = Audio(
-            src=audio_src,
-            autoplay=True,
-        )
-        e.page.overlay.append(audio)
-        e.page.update()
-        e.page.overlay.remove(audio)
 
     def _open(self, e):
         e.page.go("/guide/0")

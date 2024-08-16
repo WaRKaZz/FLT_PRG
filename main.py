@@ -19,7 +19,6 @@ async def main(page: Page):
     text_controller = TextController()
     await text_controller.load_config()
     controller = Controller(page=page, text_controller=text_controller)
-
     page.on_view_pop = controller.view_pop
     page.on_route_change = controller.routechange
     page.go(page.route)

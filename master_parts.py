@@ -7,7 +7,7 @@
 # You should have received a copy of the GNU General Public License along with Nomerin Aitashy. If not, see <https://www.gnu.org/licenses/>.
 
 
-from os import getcwd, join, path
+from os import getcwd, path
 from typing import TYPE_CHECKING
 
 import flet as ft
@@ -69,11 +69,11 @@ class ContentView(MasterTabView):
         app_bar: "AppBar",
         number: int,
         view_type: str,
+        voice: str = "aigul",
     ):
         super().__init__(navigation_bar, app_bar)
-        self.voice = "aigul"
-        self.number = None
 
+        self.voice = voice
         self.container = MasterSelectorContainer(
             text_controller.get(f"{view_type}{str(number)}_upper_text"),
             text_controller.get(f"{view_type}{str(number)}_lower_text"),
@@ -88,17 +88,33 @@ class ContentView(MasterTabView):
         else:
             return path.join(getcwd(), "assets", "voice_aigul")
 
-    def _playsound(self, e):
-        if e.page.client_storage.contains_key("settings_voice"):
-            self.voice = e.page.client_storage.get("settings_voice")
-        audio_src = join(self._get_voice_location(self.voice), f"{e.control.data}.mp3")
-        audio = Audio(
-            src=audio_src,
-            autoplay=True,
-        )
-        e.page.overlay.append(audio)
-        e.page.update()
-        e.page.overlay.remove(audio)
+    def button_sound_handler(self, e):
+        numbers = str(e.control.data).split(" ")
+        print("im here")
+        self._playsound(numbers, e)
+
+    def _playsound(self, numbers, e):
+        voice_path = self._get_voice_location(self.voice)
+
+        def play_next_audio(index):
+            if index < len(numbers):
+                audio = Audio(
+                    src=path.join(voice_path, f"{numbers[index]}.mp3"),
+                    autoplay=True,
+                    on_state_changed=lambda event: on_audio_state_changed(event, index),
+                )
+                e.page.overlay.append(audio)
+                e.page.update()
+            else:
+                e.page.overlay.clear()
+                e.page.update()
+
+        def on_audio_state_changed(event, index):
+            if event.data == "completed":
+                e.page.overlay.clear()
+                play_next_audio(index + 1)
+
+        play_next_audio(0)
 
 
 class MasterSelectorContainer(Container):
